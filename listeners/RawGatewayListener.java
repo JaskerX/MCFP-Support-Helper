@@ -45,8 +45,8 @@ public class RawGatewayListener extends ListenerAdapter {
 			String token = interactionPackage.getJSONObject("d").getString("token");
 			System.out.println(interactionPackage);
 			System.out.println(interactionPackage.getJSONObject("d").getJSONObject("member").getJSONObject("user").getString("id"));
-			User user = MCFPSupportHelper.jda.getUserById(interactionPackage.getJSONObject("d").getJSONObject("member").getJSONObject("user").getString("id"));
-			Guild guild = MCFPSupportHelper.jda.getGuildById(interactionPackage.getJSONObject("d").getString("guild_id"));
+			User user = MCFPSupportHelper.builder.getUserById(interactionPackage.getJSONObject("d").getJSONObject("member").getJSONObject("user").getString("id"));
+			Guild guild = MCFPSupportHelper.builder.getGuildById(interactionPackage.getJSONObject("d").getString("guild_id"));
 			Member member = guild.getMember(user);
 			String inputValue = interactionPackage.getJSONObject("d").getJSONObject("data").getJSONArray("components").getJSONObject(0).getJSONArray("components").getJSONObject(0).getString("value");
 			MCFPSupportHelper.log(inputValue);
@@ -67,14 +67,14 @@ public class RawGatewayListener extends ListenerAdapter {
 			
 			String channelName = "ticket-" + (MCFPSupportHelper.hˆchstesTicket + 1);
 			cats.get(0).createTextChannel(channelName).queue(channel -> {
-				channel.createPermissionOverride(member).deny(Permission.ALL_PERMISSIONS).setAllow(Permission.MESSAGE_SEND, Permission.VIEW_CHANNEL, Permission.MESSAGE_HISTORY).queue();
+				channel.upsertPermissionOverride(member).deny(Permission.ALL_PERMISSIONS).setAllowed(Permission.MESSAGE_SEND, Permission.VIEW_CHANNEL, Permission.MESSAGE_HISTORY).queue();
 				channel.sendMessage("!close zum Schlieﬂen").queue();
 				channel.sendMessage(SelectMenuListener.messages.get(user).getInfoMessage()).queue();
 				
 				String response = "...";
 				
 				OkHttpClient client = new OkHttpClient();
-
+				
 				JSONObject array = new JSONObject(
 								"{\"type\": 4,\"data\": {"
 								+ "\"flags\": 64,"

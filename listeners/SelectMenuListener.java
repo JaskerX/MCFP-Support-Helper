@@ -23,8 +23,11 @@ import net.dv8tion.jda.api.events.interaction.component.SelectMenuInteractionEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.Command.Option;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
+import net.dv8tion.jda.api.interactions.components.Modal;
 import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
 import net.dv8tion.jda.api.interactions.components.selections.SelectOption;
+import net.dv8tion.jda.api.interactions.components.text.TextInput;
+import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -94,7 +97,16 @@ public class SelectMenuListener extends ListenerAdapter {
 					messages.get(event.getUser()).setCategory("Website");
 				} else {
 					
-					sendModal(event.getId(), event.getToken());
+					//sendModal(event.getId(), event.getToken());
+					TextInput input = TextInput.create("anliegen", "Anliegen", TextInputStyle.SHORT)
+								.setRequiredRange(1, 4000)
+								.setPlaceholder("Bitte beschreibe dein Anliegen")
+								.setRequired(true)
+								.build();
+					Modal modal = Modal.create("modal_sonstiges", "Ticket: Sonstiges")
+								.addActionRow(input)
+								.build();
+					event.replyModal(modal).queue();
 					messages.get(event.getUser()).setCategory("Sonstiges");
 						
 					return;
@@ -139,7 +151,7 @@ public class SelectMenuListener extends ListenerAdapter {
 		
 		String channelName = "ticket-" + (MCFPSupportHelper.hˆchstesTicket + 1);
 		cats.get(0).createTextChannel(channelName).queue(channel -> {
-				channel.createPermissionOverride(event.getMember()).deny(Permission.ALL_PERMISSIONS).setAllow(Permission.MESSAGE_SEND, Permission.VIEW_CHANNEL, Permission.MESSAGE_HISTORY).queue();
+				channel.upsertPermissionOverride(event.getMember()).deny(Permission.ALL_PERMISSIONS).setAllowed(Permission.MESSAGE_SEND, Permission.VIEW_CHANNEL, Permission.MESSAGE_HISTORY).queue();
 				channel.sendMessage("!close zum Schlieﬂen").queue();
 				channel.sendMessage(messages.get(event.getUser()).getInfoMessage()).queue();
 				event.getHook().editOriginal("Dein Ticket wurde erstellt. Du findest es hier: " + guild.getTextChannelsByName(channelName, false).get(0).getAsMention()).queue();
@@ -181,7 +193,7 @@ public class SelectMenuListener extends ListenerAdapter {
 				});
 	}
 	
-	private void sendModal(String id, String token) {
+	/*private void sendModal(String id, String token) {
 		
 		String response = "";
 		JSONObject responseContent = new JSONObject(
@@ -220,6 +232,6 @@ public class SelectMenuListener extends ListenerAdapter {
 			e.printStackTrace();
 		}
 		
-	}
+	}*/
 	
 }
