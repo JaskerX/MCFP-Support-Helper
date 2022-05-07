@@ -16,7 +16,7 @@ public class InfoMessage {
 		
 		EmbedBuilder eb = new EmbedBuilder();
 		eb.setTitle("Informationen über das Ticket");
-		eb.addField("Ersteller", MCFPSupportHelper.jda.getUserById(creator).getAsTag(), false);
+		eb.addField("Ersteller", MCFPSupportHelper.builder.getUserById(creator).getAsTag(), false);
 		eb.addField("Kategorie", category, false);
 		eb.addField("Genaues Thema", thema, false);
 		

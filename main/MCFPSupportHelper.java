@@ -8,10 +8,16 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,22 +28,25 @@ import net.dv8tion.jda.api.JDA;
 
 public class MCFPSupportHelper
 {
-public static JDA jda;
+public static JDA builder;
 public static String token = "";
 public static String stopCmnd = "";
 public static int höchstesTicket = 0;
 private static int n = 0;
 private static String fileTagsSplitter = "_&-_";
 private static String fileArgsSplitter = "%&/&";
+//private static Connection con;
 	
     public static void main(String[] args) throws LoginException, IllegalArgumentException
     {
     	
+    	//con = connectToDb();
     	readTokenFromConfig();
     	readStopCmndFromConfig();
     	readTicketNumberFromConfig();
 		readTicketsFromConfig();
 		Status.Start();
+		//addTicketToDb(new Ticket("cr-id", "cat", "them", "creTime", "creDate", "clTime", "clDate", "cl-id"));
 	}
     
     
@@ -48,6 +57,33 @@ private static String fileArgsSplitter = "%&/&";
     	
     	System.out.println("[" + uhrzeit +", " + datum + "]   " + obj);
     }
+    
+    /*public static Connection connectToDb() {
+    	
+    	try {
+			String driver = "com.mysql.cj.jdbc.Driver";
+			String url = "jdbc:mysql://127.0.0.1:3306/mcfp_support_helper";
+			String username = "DiscordBot";
+			String password = "dcdb";
+			Class.forName(driver);
+			
+			return DriverManager.getConnection(url, username, password);
+			
+		} catch (Exception e) {e.printStackTrace();}
+		
+		return null;
+    }
+    
+    public static void addTicketToDb(Ticket ticket) {
+    	
+    	try {
+    		//Time time = new Time(Calendar.getInstance().getTimeInMillis());
+    		//Date date = new Date(Calendar.getInstance().getTimeInMillis());
+			PreparedStatement insertStatement = con.prepareStatement("INSERT INTO open_tickets (creatorId, category, thema, creationTime, creationDate, updateMessageId) VALUES ('" + ticket.creator + "', '" + ticket.category + "', '" + ticket.thema + "', '" + ticket.creationTime + "', '" + ticket.creationDate + "', '" + ticket.updateMessageId + "')");
+			insertStatement.executeUpdate();
+			
+		} catch (Exception e) {e.printStackTrace();}
+    }*/
     
     public static void readStopCmndFromConfig() {
 		

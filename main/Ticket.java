@@ -59,10 +59,10 @@ public class Ticket {
 		eb.setTitle("Ticket " + number + " wurde geschlossen");
 		eb.addField("Kategorie", category, false);
 		eb.addField("Genaues Thema", thema, false);
-		eb.addField("Erstellt:", "von: " + MCFPSupportHelper.jda.getUserById(creator).getAsTag() + " / " + MCFPSupportHelper.jda.getUserById(creator).getId()
+		eb.addField("Erstellt:", "von: " + MCFPSupportHelper.builder.getUserById(creator).getAsTag() + " / " + MCFPSupportHelper.builder.getUserById(creator).getId()
 				+ "\num: " + creationTime + " Uhr"
 				+ "\nam: " + creationDate, true);
-		eb.addField("Geschlossen:", "von: " + MCFPSupportHelper.jda.getUserById(closer).getAsTag() + " / " + MCFPSupportHelper.jda.getUserById(closer).getId()
+		eb.addField("Geschlossen:", "von: " + MCFPSupportHelper.builder.getUserById(closer).getAsTag() + " / " + MCFPSupportHelper.builder.getUserById(closer).getId()
 				+ "\num: " + closingTime + " Uhr"
 				+ "\nam: " + closingDate, true);
 		
@@ -71,7 +71,7 @@ public class Ticket {
 	
 	public void sendClosingMessagePrivat() {
 
-		MCFPSupportHelper.jda.getUserById(creator).openPrivateChannel().queue(channel ->
+		MCFPSupportHelper.builder.getUserById(creator).openPrivateChannel().queue(channel ->
 				channel.sendMessageEmbeds(getClosingMessage()).queue());
 	}
 	
